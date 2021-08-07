@@ -1,0 +1,38 @@
+.dateTimeText a {
+  color: black;
+  font-family: "Inconsolata";
+}
+.dateTimeText {
+  padding-top: 2%;
+}
+#navBar {
+  float: left;
+  width: 100%;
+  border-right: solid 1px rgb(182, 181, 181);
+  font-size: 15px;
+  height: 100vh;
+  font-family: "Inconsolata";
+}
+.nav-item > a:hover {
+  background-color: rgba(0, 0, 0, 0.503);
+  color: rgb(255, 255, 255);
+}
+.active {
+  background-color: #8ac4ff;
+  color: rgb(255, 255, 255);
+}
+@media screen and (max-width: 575px) {
+  #navBar {
+    height: auto;
+    float: none;
+    margin: auto;
+    border-right: none;
+    border-bottom: solid 1px rgb(182, 181, 181);
+  }
+}
+@media (hover: none) {
+  .nav-item > a:hover {
+    background-color: #8ac4ff;
+  color: rgb(255, 255, 255);
+  }
+}

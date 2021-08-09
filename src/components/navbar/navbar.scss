@@ -3,9 +3,8 @@
     left: auto;
 }
 #navBarRightItems{
-    font-family: 'Inconsolata';  
+    font-family: 'Montserrat';  
 }
-@media screen and (max-width: 575px)  {
-    
-    
+.navbar-collapse{
+    margin-right: 80%;
 }

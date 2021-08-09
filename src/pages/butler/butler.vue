@@ -1,19 +1,18 @@
 <template>
-  <div class="fill-container d-flex justify-content-center fillContainer">
-    <div class="fill-container baseContainer">
-     
+  <div class="fill-container">
+      <home/>
     </div>
-  </div>
 </template>
 
 <script lang="ts" >
 import { Vue } from "vue-property-decorator";
 import { mapActions } from "vuex";
+import Home from '@/components/content/home/home.vue'
 export default Vue.extend({
   name: "Butler",
 
   components: {
-    
+    Home
   },
 
   data() {

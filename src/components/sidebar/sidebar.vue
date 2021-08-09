@@ -1,6 +1,6 @@
 <template>
-  <div class="col-12" id="navBar">
-    <ul class="nav flex-column">
+  <div class="col p-0" id="navBar">
+    <!-- <ul class="nav flex-column">
       <li class="nav-item dateTimeText">
         <a class="nav-link">{{ getNowDate() | formatDate }}</a>
       </li>
@@ -19,18 +19,45 @@
           class="nav-link"
           v-bind:class="{ active: getCurrentSidebarElement === 'Questions' }"
           @click="sideBarElementClick('Questions')"
-          >Questions</a
+          >Paramètres</a
         >
       </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          v-bind:class="{ active: getCurrentSidebarElement === 'FindAJob' }"
-          @click="sideBarElementClick('FindAJob')"
-          >Trouver un boulot</a
-        >
-      </li>
-    </ul>
+     
+    </ul> -->
+    <b-list-group class="listGroupContainer">
+      <b-list-group-item
+      class="d-flex align-items-center p-2 listGroupItems"
+
+  >
+    <b-row class="m-0 w-100 align-items-center justify-content-between">
+      <b-col class="d-flex" md="auto" cols="auto">
+          <span class="material-icons">
+        home
+      </span>
+      </b-col>
+      <b-col class="d-flex p-0" align-self="start" md="" cols="auto"
+      >Acceuil
+      </b-col
+      >
+    </b-row>
+  </b-list-group-item>
+  <b-list-group-item
+      class="d-flex align-items-center p-2 listGroupItems"
+
+  >
+    <b-row class="m-0 w-100 align-items-center justify-content-between">
+      <b-col class="d-flex" md="auto" cols="auto">
+          <span class="material-icons">
+        settings
+      </span>
+      </b-col>
+      <b-col class="d-flex p-0" align-self="start" md="" cols="auto"
+      >Paramètres
+      </b-col
+      >
+    </b-row>
+  </b-list-group-item>
+    </b-list-group>
   </div>
 </template>
 

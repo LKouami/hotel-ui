@@ -1,6 +1,10 @@
 <template>
   <div>
-    <b-table :items="items" :fields="fields" :tbody-tr-class="rowClass">
+     <br>
+    <div class="row">
+        <h2>Espace</h2>
+    </div>
+    <div class="row"><b-table :items="items" :fields="fields" :tbody-tr-class="rowClass">
       <template #cell(actions)="">
         <b-button
           size="sm"
@@ -15,16 +19,17 @@
           Mettre fin 
         </b-button>
       </template>
-    </b-table>
+    </b-table></div>
+    
   </div>
 </template>
 
 <script lang="ts">
-import mock from "./mock";
+import mock from "../../reservations/mock";
 import { Vue } from "vue-property-decorator";
 
 export default Vue.extend({
-  name: "Reservations",
+  name: "Espace",
   data() {
     return {
       fields: ["nom", "type", "localisation", "prix","disponibilite", "actions"],
@@ -42,4 +47,4 @@ export default Vue.extend({
   computed: {},
 });
 </script>
-<style src="./reservations.scss" lang="scss" scoped/>
+<style src="./espace.scss" lang="scss" scoped/>

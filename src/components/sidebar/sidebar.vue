@@ -1,33 +1,10 @@
 <template>
   <div class="col p-0" id="navBar">
-    <!-- <ul class="nav flex-column">
-      <li class="nav-item dateTimeText">
-        <a class="nav-link">{{ getNowDate() | formatDate }}</a>
-      </li>
-      <hr />
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          v-bind:class="{ active: getCurrentSidebarElement === 'Home' }"
-          @click="sideBarElementClick('Home')"
-          aria-current="page"
-          >Acceuil</a
-        >
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          v-bind:class="{ active: getCurrentSidebarElement === 'Questions' }"
-          @click="sideBarElementClick('Questions')"
-          >Paramètres</a
-        >
-      </li>
-     
-    </ul> -->
-    <b-list-group class="listGroupContainer">
+   
+   <b-list-group class="listGroupContainer">
       <b-list-group-item
       class="d-flex align-items-center p-2 listGroupItems"
-
+      @click="assignCurrentMenu(home)"
   >
     <b-row class="m-0 w-100 align-items-center justify-content-between">
       <b-col class="d-flex" md="auto" cols="auto">
@@ -43,6 +20,7 @@
   </b-list-group-item>
   <b-list-group-item
       class="d-flex align-items-center p-2 listGroupItems"
+      @click="showHideSettings()"
 
   >
     <b-row class="m-0 w-100 align-items-center justify-content-between">
@@ -51,10 +29,52 @@
         settings
       </span>
       </b-col>
-      <b-col class="d-flex p-0" align-self="start" md="" cols="auto"
+      <b-col class="d-flex p-0" align-self="start"  md="" cols="auto"
       >Paramètres
       </b-col
       >
+      
+    </b-row>
+  </b-list-group-item>
+  <b-collapse id="settings-collapse">
+  <b-list-group-item
+      class="d-flex align-items-center p-2 listGroupItems"
+      v-for="item in items"
+      :key="item.id"
+      @click="assignCurrentMenu(item.baseName)"
+
+  >
+    <b-row class="m-0 w-100 align-items-center justify-content-between">
+      <b-col class="d-flex" md="auto" cols="auto">
+          <span class="material-icons">
+        {{item.iconName}}
+      </span>
+      </b-col>
+      <b-col class="d-flex p-0" align-self="start" @click="showHideSettings()" md="" cols="auto"
+      >{{item.name}}
+      </b-col
+      >
+      
+    </b-row>
+  </b-list-group-item>
+  </b-collapse>
+  
+   <b-list-group-item
+      class="d-flex align-items-center p-2 listGroupItems"
+      @click="showHideSettings()"
+
+  >
+    <b-row class="m-0 w-100 align-items-center justify-content-between">
+      <b-col class="d-flex" md="auto" cols="auto">
+          <span class="material-icons">
+        receipt
+      </span>
+      </b-col>
+      <b-col class="d-flex p-0" align-self="start"  md="" cols="auto"
+      >Facturation
+      </b-col
+      >
+      
     </b-row>
   </b-list-group-item>
     </b-list-group>
@@ -64,7 +84,10 @@
 <script lang="ts">
 import {Vue} from "vue-property-decorator";
 import moment from "moment";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import mock from './mock'
+import commonVars from "@/common/core/commonVars";
+
 Vue.filter("formatDate", function (value: string) {
   if (value) {
     return moment(value).locale("fr").format("DD MMMM YYYY, HH:mm");
@@ -74,29 +97,23 @@ export default Vue.extend({
   name: "Sidebar",
   data() {
     return {
-      isHomeActive: false,
-      isQuestionsActive: false,
-      isFindAJobActive: false,
+      home : commonVars.homeBaseName,
+      items: mock.settingsTable
     };
   },
 
   methods: {
+    ...mapActions('sidebar', ['setCurrentSidebarElement']),
     getNowDate() : Date {
       const today = new Date();
       return  today;
     },
-    sideBarElementClick(value: string) {
-      this.$store.commit("sidebar/setCurrentSidebarElement", value);
+    assignCurrentMenu(currentMenu : string) {
+      this.setCurrentSidebarElement(currentMenu)
     },
-    activeHome() {
-      this.isHomeActive = !this.isHomeActive;
-    },
-    activeQuestions() {
-      this.isQuestionsActive = !this.isQuestionsActive;
-    },
-    activeFindAJob() {
-      this.isFindAJobActive = !this.isFindAJobActive;
-    },
+    showHideSettings() {
+      this.$root.$emit('bv::toggle::collapse', 'settings-collapse')
+    }
   },
 
   computed: {

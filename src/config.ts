@@ -1,4 +1,4 @@
 export default {
   baseURL:
-    "https://localhost:44376/api/v1/",
+    "http://127.0.0.1:8000/",
 };

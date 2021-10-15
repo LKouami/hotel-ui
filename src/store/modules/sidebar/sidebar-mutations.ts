@@ -4,6 +4,5 @@ import { SidebarState } from "./types";
 export const mutations: MutationTree<SidebarState> = {
     setCurrentSidebarElement(state, payload: string){
         state.currentSidebarElement = payload
-        console.log(state.currentSidebarElement)
     }
 };

@@ -1,10 +1,12 @@
 export default {
     clientBaseName : 'Client',
-    typeClientBaseName : 'TypeClient',
-    espaceBaseName : 'Espace',
-    typeEspaceBaseName : 'TypeEspace',
-    etatEspaceBaseName : 'EtatEspace',
-    materielBaseName : 'Materiel',
-    affectationMaterielBaseName : 'AffectationMateriel',
+    reductionBaseName : 'Reduction',
+    clientTypeBaseName : 'ClientType',
+    spaceBaseName : 'Space',
+    spaceTypeBaseName : 'SpaceType',
+    spaceStateBaseName : 'SpaceState',
+    userBaseName : 'User',
+    roleBaseName : 'Role',
+    billBaseName : 'Bill',
     homeBaseName : 'Home',
 }

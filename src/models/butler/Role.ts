@@ -1,31 +1,27 @@
 import {BaseModel} from "@/models/BaseModel";
 import { JsonProperty, Serializable } from "typescript-json-serializer";
+import { Request } from "../request/request";
 
 @Serializable()
-export class Role extends BaseModel {
+export class Role extends Request {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
     
     @JsonProperty({ name: 'users' })
-    private _users: string[];
+    private _users: string[] | undefined;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
-    constructor(id: string, name: string, users: string[], createdAt: string, modifiedAt: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._users = users;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     get id(): string {
@@ -40,10 +36,10 @@ export class Role extends BaseModel {
     set name(value: string) {
         this._name = value;
     }
-    get users(): string[] {
+    get users(): string[] | undefined {
         return this._users;
     }
-    set users(value: string[]) {
+    set users(value: string[] | undefined) {
         this._users = value;
     }
     get createdAt(): string {
@@ -57,8 +53,32 @@ export class Role extends BaseModel {
     }
     set modifiedAt(value: string) {
         this._modifiedAt = value;
+    }    
+}
+
+export class SendRoleRequestBuilder {
+    private readonly _sendRequest: Role
+
+    constructor() {
+        this._sendRequest = new Role()
     }
 
+    name(name: string): SendRoleRequestBuilder {
+        this._sendRequest.name = name
+        return this
+    }
 
-    
+    createdAt(createdAt: string): SendRoleRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendRoleRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    build(): Role {
+        return this._sendRequest
+    }
 }

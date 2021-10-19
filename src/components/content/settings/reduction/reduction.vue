@@ -8,7 +8,7 @@
           class="mr-1 ml-2 mb-1 mt-1"
           variant="outline-success"
         >
-          Nouveau
+          Nouvelle
         </b-button>
     </div>
     <div class="row">

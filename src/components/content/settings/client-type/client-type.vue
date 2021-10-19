@@ -3,7 +3,7 @@
   <div>
     <br />
     <div class="row">
-      <h2>Utilisateur</h2>
+      <h2>Type de Client</h2>
       <b-button size="xs" class="mr-1 ml-2 mb-1 mt-1" variant="outline-success">
         Nouveau
       </b-button>

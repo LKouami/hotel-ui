@@ -8,5 +8,8 @@ export const getters: GetterTree<ButlerState, RootState> = {
     getRoles(state): Role[]{
         return state.role
     },
+    getIsModalVisible(state): boolean{
+        return state.isModalVisible
+    }
 
 };

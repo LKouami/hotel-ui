@@ -1,5 +1,5 @@
 import config from "@/config";
-import { Role } from "@/models/butler/Role";
+import { Role, SendRoleRequestBuilder } from "@/models/butler/Role";
 import { ApiResponse } from "@/models/http/ApiResponse";
 import { SearchRequest, SearchRequestBuilder } from "@/models/request/SearchRequest";
 import { AxiosRequestConfig } from "axios";
@@ -38,6 +38,37 @@ export class RoleService extends HttpBaseService {
             })
             .catch(error => {
                 return new ApiResponse<Role[]>()
+            })
+    }
+
+    public sendRole(role: Role): Promise<ApiResponse<Role>> {
+        const request: Role = new SendRoleRequestBuilder()
+            .name(role.name)
+            .createdAt(role.createdAt)
+            .modifiedAt(role.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'role'
+
+        return this.instance.post(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<Role>()
+                switch (response.status) {
+                    case 204: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<Role>(response.data, Role)
+                        console.log('post réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('post échoué')
+                        return new ApiResponse<Role>()
             })
     }
 

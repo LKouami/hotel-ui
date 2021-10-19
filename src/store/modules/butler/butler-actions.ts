@@ -16,4 +16,7 @@ export const actions: ActionTree<ButlerState, RootState> = {
                 console.log(reason)
             })
     },
+    setIsModalVisible(context, payload:boolean){
+        context.commit('setIsModalVisible', payload)
+    }
 }

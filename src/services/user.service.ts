@@ -5,7 +5,7 @@ import { AxiosRequestConfig } from "axios";
 import { serialize, deserialize } from "typescript-json-serializer";
 import { HttpBaseService } from "./httpBase.service";
 import {Utils} from "@/common/core/utils";
-import { User } from "@/models/butler/User";
+import { SendUserRequestBuilder, User } from "@/models/butler/User";
 
 export class UserService extends HttpBaseService {
     private static classInstance?: UserService;
@@ -41,6 +41,38 @@ export class UserService extends HttpBaseService {
             })
     }
 
+    public sendUser(user: User): Promise<ApiResponse<User>> {
+        const request: User = new SendUserRequestBuilder()
+            .name(user.name)
+            .email(user.email)
+            .password(user.password)
+            .role_id(user.role_id)
+            .createdAt(user.createdAt)
+            .modifiedAt(user.modifiedAt)
+            .build()
 
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'user'
+
+        return this.instance.post(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<User>()
+                switch (response.status) {
+                    case 204: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<User>(response.data, User)
+                        console.log('post réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('post échoué')
+                        return new ApiResponse<User>()
+            })
+    }
 
 }

@@ -6,4 +6,7 @@ export const mutations: MutationTree<ButlerState> = {
     setRole(state, payload: Role[]) {
         state.role = payload
     },
+    setIsModalVisible(state, payload: boolean){
+        state.isModalVisible = payload
+    }
 };

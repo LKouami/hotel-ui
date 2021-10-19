@@ -21,6 +21,8 @@
         <b-button
           size="sm"
           class="mr-1"
+          @click="showModal()"
+          ref="btnShow"
         >
           Voir Plus
         </b-button>
@@ -32,6 +34,13 @@
         </b-button>
       </template>
     </b-table>
+    <b-modal
+      id="modal-prevent-closing"
+      ref="modal"
+      title="Submit Your Name"
+    >
+    <modal/>
+    </b-modal>
   </div>
 </template>
 
@@ -42,6 +51,7 @@ import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
 import { Utils } from "@/common/core/utils";
 import { Reservation } from "@/models/butler/Reservation";
+import Modal from "./modal/modal.vue"
 
 Vue.filter("formatDate", function (value) {
   if (value) {
@@ -51,6 +61,9 @@ Vue.filter("formatDate", function (value) {
 
 export default Vue.extend({
   name: "Reservations",
+  components: {
+    Modal
+  },
   data() {
     return {
       fields: [
@@ -109,7 +122,14 @@ export default Vue.extend({
           sortable: false,
         }
         ],
-      items: mock.items
+      items: mock.items,
+      modalContent : [
+        {
+          label: "Date début",
+          type: "date"
+
+        }
+      ]
     };
   },
 
@@ -120,6 +140,11 @@ export default Vue.extend({
     rowClass(item, type) {
       if (!item || type !== "row") return;
       if (item.disponibilite === "libre") return "table-success";
+    },
+
+    showModal() {
+      this.$root.$emit('bv::show::modal', 'modal-prevent-closing', '#btnShow')
+      console.log('teststtststst')
     },
   },
 

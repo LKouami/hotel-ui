@@ -6,31 +6,25 @@ import { Client } from "./Client";
 export class ClientType extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
     
     @JsonProperty({ name: 'clients', type: Client })
-    private _clients: Client[];
+    private _clients: Client[] | undefined;
 
     @JsonProperty({ name: 'user_id' })
-    private _user_id: string;
+    private _user_id!: string;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
-    constructor(id: string, name: string, clients: Client[], user_id: string,createdAt: string, modifiedAt: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._clients = clients;
-        this._user_id = user_id;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     get id(): string {
@@ -45,10 +39,10 @@ export class ClientType extends BaseModel {
     set name(value: string) {
         this._name = value;
     }
-    get clients(): Client[] {
+    get clients(): Client[] | undefined {
         return this._clients;
     }
-    set clients(value: Client[]) {
+    set clients(value: Client[] | undefined) {
         this._clients = value;
     }
     get user_id(): string {
@@ -69,7 +63,35 @@ export class ClientType extends BaseModel {
     set modifiedAt(value: string) {
         this._modifiedAt = value;
     }
+}
+export class SendClientTypeRequestBuilder {
+    private readonly _sendRequest: ClientType
 
+    constructor() {
+        this._sendRequest = new ClientType()
+    }
 
-    
+    name(name: string): SendClientTypeRequestBuilder {
+        this._sendRequest.name = name
+        return this
+    }
+
+    user_id(user_id: string): SendClientTypeRequestBuilder {
+        this._sendRequest.user_id = user_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendClientTypeRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendClientTypeRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    build(): ClientType {
+        return this._sendRequest
+    }
 }

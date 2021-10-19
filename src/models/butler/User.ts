@@ -7,36 +7,35 @@ import { Role } from "./Role";
 export class User extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
     
     @JsonProperty({ name: 'email' })
-    private _email: string;
+    private _email!: string;
+
+    @JsonProperty({ name: 'password' })
+    private _password!: string;
+
+    @JsonProperty({ name: 'role_id' })
+    private _role_id!: string;
     
     @JsonProperty({ name: 'role', type: Role })
-    private _role: Role;
+    private _role!: Role;
     
     @JsonProperty({ name: 'clients', type: Client })
-    private _clients: Client[];
+    private _clients: Client[] | undefined;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
     
 
-    constructor(id: string, name: string, email: string, role: Role, clients:Client[],  createdAt: string, modifiedAt: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._email = email;
-        this._role = role;
-        this._clients = clients;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     public get id(): string {
@@ -57,16 +56,28 @@ export class User extends BaseModel {
     public set email(value: string) {
         this._email = value;
     }
+    public get password(): string {
+        return this._password;
+    }
+    public set password(value: string) {
+        this._password = value;
+    }
+    public get role_id(): string {
+        return this._role_id;
+    }
+    public set role_id(value: string) {
+        this._role_id = value;
+    }
     public get role(): Role {
         return this._role;
     }
     public set role(value: Role) {
         this._role = value;
     }
-    public get clients(): Client[] {
+    public get clients(): Client[] | undefined {
         return this._clients;
     }
-    public set clients(value: Client[]) {
+    public set clients(value: Client[] | undefined) {
         this._clients = value;
     }
     public get createdAt(): string {
@@ -83,4 +94,46 @@ export class User extends BaseModel {
     }
 
     
+}
+
+export class SendUserRequestBuilder {
+    private readonly _sendRequest: User
+
+    constructor() {
+        this._sendRequest = new User()
+    }
+
+    name(name: string): SendUserRequestBuilder {
+        this._sendRequest.name = name
+        return this
+    }
+
+    email(email: string): SendUserRequestBuilder {
+        this._sendRequest.email = email
+        return this
+    }
+
+    password(password: string): SendUserRequestBuilder {
+        this._sendRequest.password = password
+        return this
+    }
+
+    role_id(role_id: string): SendUserRequestBuilder {
+        this._sendRequest.role_id = role_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendUserRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendUserRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    build(): User {
+        return this._sendRequest
+    }
 }

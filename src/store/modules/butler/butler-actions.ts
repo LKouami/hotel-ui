@@ -5,17 +5,15 @@ import { ButlerService } from '@/services/butler.service';
 
 export const actions: ActionTree<ButlerState, RootState> = {
 
-    retrieveAffectationMateriel(context) {
-        ButlerService.getInstance('').retrieveAffectationMateriel()
+    getRoles(context) {
+        ButlerService.getInstance('').retrieveRole()
             .then(value => {
                 if (value.data) {
-                   console.log(value.data)
+                   context.commit('setRole', value.data)
                 }
             })
             .catch(reason => {
                 console.log(reason)
             })
     },
-    
-
 }

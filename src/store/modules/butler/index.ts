@@ -6,7 +6,7 @@ import {mutations} from "@/store/modules/butler/butler-mutations";
 import {ButlerState} from "@/store/modules/butler/types";
 
 export const state: ButlerState = {
-    socket : undefined
+    role : []
 };
 
 export const butler: Module<ButlerState, RootState> = {

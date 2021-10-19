@@ -61,8 +61,7 @@
   
    <b-list-group-item
       class="d-flex align-items-center p-2 listGroupItems"
-      @click="showHideSettings()"
-
+      @click="assignCurrentMenu('Bill')"
   >
     <b-row class="m-0 w-100 align-items-center justify-content-between">
       <b-col class="d-flex" md="auto" cols="auto">

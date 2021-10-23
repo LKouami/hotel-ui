@@ -6,4 +6,7 @@ export const mutations: MutationTree<RoleState> = {
     setRole(state, payload: Role[]) {
         state.role = payload
     },
+    setRoleMap(state, payload: Map<string, string> | undefined) {
+        state.roleMap = payload
+    }
 };

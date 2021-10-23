@@ -3,6 +3,7 @@ import { RoleState } from "./types";
 import { RootState } from "@/store/types"
 import { RoleService } from '@/services/role.service';
 import { Role } from '@/models/butler/Role';
+import { Utils } from '@/common/core/utils';
 
 export const actions: ActionTree<RoleState, RootState> = {
 
@@ -10,7 +11,9 @@ export const actions: ActionTree<RoleState, RootState> = {
         RoleService.getInstance('').getAll()
             .then(value => {
                 if (value.data) {
-                   context.commit('setRole', value.data)
+                    const mapBuilded : Map<string, string|unknown> = Utils.buildRoleMap(value.data)
+                    context.commit('setRoleMap', mapBuilded)
+                    context.commit('setRole', value.data)
                 }
             })
             .catch(reason => {
@@ -33,5 +36,7 @@ export const actions: ActionTree<RoleState, RootState> = {
             }).catch(reason => {
                 console.log(reason)
             })
-    }
+    },
+
+    
 }

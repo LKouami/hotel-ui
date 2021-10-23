@@ -6,7 +6,8 @@ import {mutations} from "@/store/modules/role/role-mutations";
 import {RoleState} from "@/store/modules/role/types";
 
 export const state: RoleState = {
-    role : []
+    role : [],
+    roleMap: undefined
 };
 
 export const role: Module<RoleState, RootState> = {

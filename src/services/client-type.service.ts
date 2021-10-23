@@ -1,5 +1,5 @@
 import config from "@/config";
-import { ClientType } from "@/models/butler/ClientType";
+import { ClientType, SendClientTypeRequestBuilder } from "@/models/butler/ClientType";
 import { ApiResponse } from "@/models/http/ApiResponse";
 import { SearchRequest, SearchRequestBuilder } from "@/models/request/SearchRequest";
 import { AxiosRequestConfig } from "axios";
@@ -38,6 +38,38 @@ export class ClientTypeService extends HttpBaseService {
             })
             .catch(error => {
                 return new ApiResponse<ClientType[]>()
+            })
+    }
+
+    public sendClientType(client_type: ClientType): Promise<ApiResponse<ClientType>> {
+        const request: ClientType = new SendClientTypeRequestBuilder()
+            .name(client_type.name)
+            .user_id(client_type.user_id)
+            .createdAt(client_type.createdAt)
+            .modifiedAt(client_type.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'client_type'
+
+        return this.instance.post(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<ClientType>()
+                switch (response.status) {
+                    case 204: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<ClientType>(response.data, ClientType)
+                        console.log('post réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('post échoué')
+                        return new ApiResponse<ClientType>()
             })
     }
 

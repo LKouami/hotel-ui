@@ -3,7 +3,7 @@ export class CommonFunctions {
       return "commonFunctions";
     }
 
-    static makeToast(variant = null, messageBody, title, toastGenerator) {
+    static makeToast(variant, messageBody, title, toastGenerator) {
         toastGenerator.toast(`${messageBody}`, {
           title: `${title}`,
           variant: variant,

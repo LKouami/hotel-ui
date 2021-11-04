@@ -8,5 +8,8 @@ export const getters: GetterTree<ReductionState, RootState> = {
     getReductions(state): Reduction[]{
         return state.reductions
     },
+    getReductionsMap(state): Map<string, string> | undefined{
+        return state.reductionMap
+    },
 
 };

@@ -54,6 +54,8 @@
       v-model="getIsModalVisible"
       :hide-footer="true"
       @hidden="resetModal"
+      scrollable 
+      centered 
     >
       <modal :action="action" />
     </b-modal>

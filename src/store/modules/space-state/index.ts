@@ -6,7 +6,8 @@ import {mutations} from "@/store/modules/space-state/space-state-mutations";
 import {SpaceStateState} from "@/store/modules/space-state/types";
 
 export const state: SpaceStateState = {
-    space_state : []
+    space_state : [],
+    space_stateMap: undefined
 };
 
 export const space_state: Module<SpaceStateState, RootState> = {

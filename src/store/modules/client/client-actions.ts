@@ -3,6 +3,7 @@ import { ClientState } from "./types";
 import { RootState } from "@/store/types"
 import { ClientService } from '@/services/client.service';
 import { Client } from '@/models/butler/Client';
+import { Utils } from '@/common/core/utils';
 
 export const actions: ActionTree<ClientState, RootState> = {
 
@@ -10,7 +11,9 @@ export const actions: ActionTree<ClientState, RootState> = {
         ClientService.getInstance('').getAll()
             .then(value => {
                 if (value.data) {
-                   context.commit('setClient', value.data)
+                const mapBuilded : Map<string, string|unknown> = Utils.buildClientMap(value.data)
+                context.commit('setClientMap', mapBuilded)
+                context.commit('setClient', value.data)
                 }
             })
             .catch(reason => {

@@ -1,5 +1,5 @@
 import config from "@/config";
-import { SpaceState } from "@/models/butler/SpaceState";
+import { SendSpaceStateRequestBuilder, SpaceState } from "@/models/butler/SpaceState";
 import { ApiResponse } from "@/models/http/ApiResponse";
 import { SearchRequest, SearchRequestBuilder } from "@/models/request/SearchRequest";
 import { AxiosRequestConfig } from "axios";
@@ -38,6 +38,38 @@ export class SpaceStateService extends HttpBaseService {
             })
             .catch(error => {
                 return new ApiResponse<SpaceState[]>()
+            })
+    }
+
+    public sendSpaceState(space_state: SpaceState): Promise<ApiResponse<SpaceState>> {
+        const request: SpaceState = new SendSpaceStateRequestBuilder()
+            .name(space_state.name)
+            .user_id("2")
+            .createdAt(space_state.createdAt)
+            .modifiedAt(space_state.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'space_state'
+
+        return this.instance.post(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<SpaceState>()
+                switch (response.status) {
+                    case 204: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<SpaceState>(response.data, SpaceState)
+                        console.log('post réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('post échoué')
+                        return new ApiResponse<SpaceState>()
             })
     }
 

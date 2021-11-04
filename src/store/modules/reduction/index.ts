@@ -6,7 +6,8 @@ import {mutations} from "@/store/modules/reduction/reduction-mutations";
 import {ReductionState} from "@/store/modules/reduction/types";
 
 export const state: ReductionState = {
-    reductions : []
+    reductions : [],
+    reductionMap: undefined
 };
 
 export const reduction: Module<ReductionState, RootState> = {

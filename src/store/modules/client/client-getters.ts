@@ -8,5 +8,7 @@ export const getters: GetterTree<ClientState, RootState> = {
     getClients(state): Client[]{
         return state.client
     },
-
+    getClientsMap(state): Map<string, string> | undefined{
+        return state.clientMap
+    },
 };

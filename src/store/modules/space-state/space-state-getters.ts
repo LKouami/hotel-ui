@@ -8,5 +8,8 @@ export const getters: GetterTree<SpaceStateState, RootState> = {
     getSpaceStates(state): SpaceState[]{
         return state.space_state
     },
+    getSpaceStatesMap(state): Map<string, string> | undefined{
+        return state.space_stateMap
+    },
 
 };

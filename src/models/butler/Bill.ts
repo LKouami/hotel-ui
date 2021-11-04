@@ -7,43 +7,34 @@ import { ToBill } from "./ToBill";
 export class Bill extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'b_date' })
-    private _b_date: string;
+    private _b_date!: string;
 
     @JsonProperty({ name: 'b_num' })
-    private _b_num: string;
+    private _b_num!: string;
     
     @JsonProperty({ name: 'client_id' })
-    private _client_id: string;
+    private _client_id!: string;
     
     @JsonProperty({ name: 'client', type: Client })
-    private _client: Client;
+    private _client: Client | undefined;
     
     @JsonProperty({ name: 'to_bills', type: ToBill })
-    private _to_bills: ToBill[];
+    private _to_bills: ToBill[] | undefined;
     
     @JsonProperty({ name: 'user_id' })
-    private _user_id: string;
+    private _user_id!: string;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
-    constructor(id: string, b_date: string, b_num: string,client_id: string,client: Client,to_bills: ToBill[],user_id: string, createdAt: string, modifiedAt: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._b_date = b_date;
-        this._b_num = b_num;
-        this._client_id = client_id;
-        this._client = client;
-        this._to_bills = to_bills;
-        this._user_id = user_id;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     get id(): string {
@@ -70,16 +61,16 @@ export class Bill extends BaseModel {
     set client_id(value: string) {
         this._client_id = value;
     }
-    get client(): Client {
+    get client(): Client | undefined {
         return this._client;
     }
-    set client(value: Client) {
+    set client(value: Client | undefined) {
         this._client = value;
     }
-    get to_bills(): ToBill[] {
+    get to_bills(): ToBill[] | undefined {
         return this._to_bills;
     }
-    set to_bills(value: ToBill[]) {
+    set to_bills(value: ToBill[] | undefined) {
         this._to_bills = value;
     }
     get user_id(): string {
@@ -99,5 +90,46 @@ export class Bill extends BaseModel {
     }
     set modifiedAt(value: string) {
         this._modifiedAt = value;
+    }
+}
+export class SendBillRequestBuilder {
+    private readonly _sendRequest: Bill
+
+    constructor() {
+        this._sendRequest = new Bill()
+    }
+
+    b_date(b_date: string): SendBillRequestBuilder {
+        this._sendRequest.b_date = b_date
+        return this
+    }
+
+    b_num(b_num: string): SendBillRequestBuilder {
+        this._sendRequest.b_num = b_num
+        return this
+    }
+    
+    client_id(client_id: string): SendBillRequestBuilder {
+        this._sendRequest.client_id = client_id
+        return this
+    }
+
+    user_id(user_id: string): SendBillRequestBuilder {
+        this._sendRequest.user_id = user_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendBillRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendBillRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    build(): Bill {
+        return this._sendRequest
     }
 }

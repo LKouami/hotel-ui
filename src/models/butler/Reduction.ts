@@ -6,40 +6,32 @@ import { Reservation } from "./Reservation";
 export class Reduction extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
     
     @JsonProperty({ name: 'rate' })
-    private _rate: string;
+    private _rate!: string;
     
     @JsonProperty({ name: 'reservations', type: Reservation })
-    private _reservations: Reservation[];
+    private _reservations: Reservation[] | undefined;
 
     @JsonProperty({ name: 'user_id' })
-    private _user_id: string;
+    private _user_id!: string;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
     @JsonProperty({ name: 'modified_by' })
-    private _modifiedBy: string;
+    private _modifiedBy!: string;
     
 
-    constructor(id: string, name: string, rate: string, reservations: Reservation[],createdAt: string,user_id: string, modifiedAt: string,modifiedBy: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._rate = rate;
-        this._reservations = reservations;
-        this._user_id = user_id;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
-        this._modifiedBy = modifiedBy;
     }
 
     get id(): string {
@@ -60,10 +52,10 @@ export class Reduction extends BaseModel {
     set rate(value: string) {
         this._rate = value;
     }
-    get reservations(): Reservation[] {
+    get reservations(): Reservation[] | undefined {
         return this._reservations;
     }
-    set reservations(value: Reservation[]) {
+    set reservations(value: Reservation[] | undefined) {
         this._reservations = value;
     }
     get user_id(): string {
@@ -89,6 +81,46 @@ export class Reduction extends BaseModel {
     }
     set modifiedBy(value: string) {
         this._modifiedBy = value;
+    }  
+}
+export class SendReductionRequestBuilder {
+    private readonly _sendRequest: Reduction
+
+    constructor() {
+        this._sendRequest = new Reduction()
+    }
+
+    name(name: string): SendReductionRequestBuilder {
+        this._sendRequest.name = name
+        return this
     }
     
+    rate(rate: string): SendReductionRequestBuilder {
+        this._sendRequest.rate = rate
+        return this
+    }
+
+    user_id(user_id: string): SendReductionRequestBuilder {
+        this._sendRequest.user_id = user_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendReductionRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendReductionRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    modifiedBy(modifiedBy: string ): SendReductionRequestBuilder {
+        this._sendRequest.modifiedBy = modifiedBy
+        return this
+    }
+
+    build(): Reduction {
+        return this._sendRequest
+    }
 }

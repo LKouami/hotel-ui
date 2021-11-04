@@ -9,4 +9,8 @@ export const getters: GetterTree<SpaceTypeState, RootState> = {
         return state.space_type
     },
 
+    getSpaceTypesMap(state): Map<string, string> | undefined{
+        return state.space_typeMap
+    },
+
 };

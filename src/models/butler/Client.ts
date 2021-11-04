@@ -8,75 +8,58 @@ import { Reservation } from "./Reservation";
 export class Client extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
 
     @JsonProperty({ name: 'email' })
-    private _email: string;
+    private _email!: string;
 
     @JsonProperty({ name: 'nationality' })
-    private _nationality: string;
+    private _nationality!: string;
 
     @JsonProperty({ name: 'id_card_num' })
-    private _id_card_num: string;
+    private _id_card_num!: string;
 
     @JsonProperty({ name: 'phone' })
-    private _phone: string;
+    private _phone!: string;
     
     @JsonProperty({ name: 'birth_date' })
-    private _birth_date: string;
+    private _birth_date!: string;
     
     @JsonProperty({ name: 'under_cover' })
-    private _under_cover: string;
+    private _under_cover!: string;
     
     @JsonProperty({ name: 'comments' })
-    private _comments: string;
+    private _comments!: string;
     
     @JsonProperty({ name: 'user_id' })
-    private _user_id: string;
+    private _user_id!: string;
     
     @JsonProperty({ name: 'creator' })
-    private _creator: string;
+    private _creator!: string;
     
     @JsonProperty({ name: 'client_type_id' })
-    private _client_type_id: string;
+    private _client_type_id!: string;
 
     @JsonProperty({ name: 'client_type', type: ClientType })
-    private _client_type: ClientType;
+    private _client_type: ClientType | undefined;
     
     @JsonProperty({ name: 'bills', type: Bill })
-    private _bills: Bill[];
+    private _bills: Bill[] | undefined;
     
     @JsonProperty({ name: 'reservations', type: Reservation })
-    private _reservations: Reservation[];
+    private _reservations: Reservation[] | undefined;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
-    constructor(id: string, name: string, email: string,nationality: string,id_card_num: string,phone: string,birth_date: string,under_cover: string,comments: string,user_id: string,creator: string,client_type_id: string,client_type: ClientType,bills: Bill[],reservations: Reservation[], createdAt: string, modifiedAt: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._email = email;
-        this._nationality = nationality;
-        this._id_card_num = id_card_num;
-        this._phone = phone;
-        this._birth_date = birth_date;
-        this._under_cover = under_cover;
-        this._comments = comments;
-        this._user_id = user_id;
-        this._creator = creator;
-        this._client_type_id = client_type_id;
-        this._client_type = client_type;
-        this._bills = bills;
-        this._reservations = reservations;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     get id(): string {
@@ -151,22 +134,22 @@ export class Client extends BaseModel {
     set client_type_id(value: string) {
         this._client_type_id = value;
     }
-    get client_type(): ClientType {
+    get client_type(): ClientType | undefined {
         return this._client_type;
     }
-    set client_type(value: ClientType) {
+    set client_type(value: ClientType | undefined) {
         this._client_type = value;
     }
-    get bills(): Bill[] {
+    get bills(): Bill[] | undefined {
         return this._bills;
     }
-    set bills(value: Bill[]) {
+    set bills(value: Bill[] | undefined) {
         this._bills = value;
     }
-    get reservations(): Reservation[] {
+    get reservations(): Reservation[] | undefined {
         return this._reservations;
     }
-    set reservations(value: Reservation[]) {
+    set reservations(value: Reservation[] | undefined) {
         this._reservations = value;
     }
     get createdAt(): string {
@@ -181,7 +164,76 @@ export class Client extends BaseModel {
     set modifiedAt(value: string) {
         this._modifiedAt = value;
     }
+}
 
+export class SendClientRequestBuilder {
+    private readonly _sendRequest: Client
 
-    
+    constructor() {
+        this._sendRequest = new Client()
+    }
+
+    name(name: string): SendClientRequestBuilder {
+        this._sendRequest.name = name
+        return this
+    }
+
+    email(email: string): SendClientRequestBuilder {
+        this._sendRequest.email = email
+        return this
+    }
+
+    nationality(nationality: string): SendClientRequestBuilder {
+        this._sendRequest.nationality = nationality
+        return this
+    }
+
+    id_card_num(id_card_num: string): SendClientRequestBuilder {
+        this._sendRequest.id_card_num = id_card_num
+        return this
+    }
+
+    phone(phone: string): SendClientRequestBuilder {
+        this._sendRequest.phone = phone
+        return this
+    }
+
+    birth_date(birth_date: string): SendClientRequestBuilder {
+        this._sendRequest.birth_date = birth_date
+        return this
+    }
+
+    under_cover(under_cover: string): SendClientRequestBuilder {
+        this._sendRequest.under_cover = under_cover
+        return this
+    }
+
+    comments(comments: string): SendClientRequestBuilder {
+        this._sendRequest.comments = comments
+        return this
+    }
+
+    client_type_id(client_type_id: string): SendClientRequestBuilder {
+        this._sendRequest.client_type_id = client_type_id
+        return this
+    }
+
+    user_id(user_id: string): SendClientRequestBuilder {
+        this._sendRequest.user_id = user_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendClientRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendClientRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    build(): Client {
+        return this._sendRequest
+    }
 }

@@ -9,59 +9,49 @@ import { SpaceType } from "./SpaceType";
 export class Space extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
 
     @JsonProperty({ name: 'location' })
-    private _location: string;
+    private _location!: string;
     
     @JsonProperty({ name: 'price' })
-    private _price: string;
+    private _price!: string;
 
     @JsonProperty({ name: 'comments' })
-    private _comments: string;
+    private _comments!: string;
     
     @JsonProperty({ name: 'space_type_id' })
-    private _space_type_id: string;
+    private _space_type_id!: string;
 
     @JsonProperty({ name: 'space_type', type: SpaceType })
-    private _space_type: SpaceType;
+    private _space_type: SpaceType | undefined;
     
     @JsonProperty({ name: 'space_state_id' })
-    private _space_state_id: string;
+    private _space_state_id!: string;
     
     @JsonProperty({ name: 'space_state', type: SpaceState })
-    private _space_state: SpaceState;
+    private _space_state: SpaceState | undefined;
     
     @JsonProperty({ name: 'reservations', type: Reservation })
-    private _reservations: Reservation[];
+    private _reservations: Reservation[] | undefined;
     
     @JsonProperty({ name: 'user_id' })
-    private _user_id: string;
+    private _user_id!: string;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
-    constructor(id: string, name: string, location: string, price: string,comments: string,space_type_id: string,space_type: SpaceType,space_state_id: string,space_state: SpaceState,reservations: Reservation[],user_id: string,createdAt: string, modifiedAt: string) {
+    @JsonProperty({ name: 'modified_by' })
+    private _modifiedBy!: string;
+
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._location = location;
-        this._price = price;
-        this._comments = comments;
-        this._space_type_id = space_type_id;
-        this._space_type = space_type;
-        this._space_state_id = space_state_id;
-        this._space_state = space_state;
-        this._reservations = reservations;
-        this._user_id = user_id;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     get id(): string {
@@ -100,10 +90,10 @@ export class Space extends BaseModel {
     public set space_type_id(value: string) {
         this._space_type_id = value;
     }
-    public get space_type(): SpaceType {
+    public get space_type(): SpaceType | undefined {
         return this._space_type;
     }
-    public set space_type(value: SpaceType) {
+    public set space_type(value: SpaceType | undefined) {
         this._space_type = value;
     }
     public get space_state_id(): string {
@@ -112,16 +102,16 @@ export class Space extends BaseModel {
     public set space_state_id(value: string) {
         this._space_state_id = value;
     }
-    public get space_state(): SpaceState {
+    public get space_state(): SpaceState | undefined {
         return this._space_state;
     }
-    public set space_state(value: SpaceState) {
+    public set space_state(value: SpaceState | undefined) {
         this._space_state = value;
     }
-    public get reservations(): Reservation[] {
+    public get reservations(): Reservation[] | undefined {
         return this._reservations;
     }
-    public set reservations(value: Reservation[]) {
+    public set reservations(value: Reservation[] | undefined) {
         this._reservations = value;
     }
     get user_id(): string {
@@ -142,7 +132,72 @@ export class Space extends BaseModel {
     set modifiedAt(value: string) {
         this._modifiedAt = value;
     }
+    get modifiedBy(): string {
+        return this._modifiedBy;
+    }
+    set modifiedBy(value: string) {
+        this._modifiedBy = value;
+    }
+}
 
+export class SendSpaceRequestBuilder {
+    private readonly _sendRequest: Space
 
+    constructor() {
+        this._sendRequest = new Space()
+    }
+
+    name(name: string): SendSpaceRequestBuilder {
+        this._sendRequest.name = name
+        return this
+    }
+
+    location(location: string): SendSpaceRequestBuilder {
+        this._sendRequest.location = location
+        return this
+    }
     
+    price(price: string): SendSpaceRequestBuilder {
+        this._sendRequest.price = price
+        return this
+    }
+
+    comments(comments: string): SendSpaceRequestBuilder {
+        this._sendRequest.comments = comments
+        return this
+    }
+
+    space_type_id(space_type_id: string): SendSpaceRequestBuilder {
+        this._sendRequest.space_type_id = space_type_id
+        return this
+    }
+
+    space_state_id(space_state_id: string): SendSpaceRequestBuilder {
+        this._sendRequest.space_state_id = space_state_id
+        return this
+    }
+
+    user_id(user_id: string): SendSpaceRequestBuilder {
+        this._sendRequest.user_id = user_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendSpaceRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendSpaceRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    modifiedBy(modifiedBy: string ): SendSpaceRequestBuilder {
+        this._sendRequest.modifiedBy = modifiedBy
+        return this
+    }
+
+    build(): Space {
+        return this._sendRequest
+    }
 }

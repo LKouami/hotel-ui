@@ -1,5 +1,5 @@
 import config from "@/config";
-import { SpaceType } from "@/models/butler/SpaceType";
+import { SendSpaceTypeRequestBuilder, SpaceType } from "@/models/butler/SpaceType";
 import { ApiResponse } from "@/models/http/ApiResponse";
 import { SearchRequest, SearchRequestBuilder } from "@/models/request/SearchRequest";
 import { AxiosRequestConfig } from "axios";
@@ -38,6 +38,38 @@ export class SpaceTypeService extends HttpBaseService {
             })
             .catch(error => {
                 return new ApiResponse<SpaceType[]>()
+            })
+    }
+
+    public sendSpaceType(space_type: SpaceType): Promise<ApiResponse<SpaceType>> {
+        const request: SpaceType = new SendSpaceTypeRequestBuilder()
+            .name(space_type.name)
+            .user_id("2")
+            .createdAt(space_type.createdAt)
+            .modifiedAt(space_type.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'space_type'
+
+        return this.instance.post(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<SpaceType>()
+                switch (response.status) {
+                    case 204: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<SpaceType>(response.data, SpaceType)
+                        console.log('post réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('post échoué')
+                        return new ApiResponse<SpaceType>()
             })
     }
 

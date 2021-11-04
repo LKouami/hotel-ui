@@ -6,7 +6,8 @@ import {mutations} from "@/store/modules/client/client-mutations";
 import {ClientState} from "@/store/modules/client/types";
 
 export const state: ClientState = {
-    client : []
+    client : [],
+    clientMap: undefined
 };
 
 export const client: Module<ClientState, RootState> = {

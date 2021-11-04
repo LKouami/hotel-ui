@@ -7,31 +7,25 @@ import { Space } from "./Space";
 export class SpaceState extends BaseModel {
     
     @JsonProperty({ name: 'id' })
-    private _id: string;
+    private _id!: string;
     
     @JsonProperty({ name: 'name' })
-    private _name: string;
+    private _name!: string;
     
     @JsonProperty({ name: 'spaces', type: Space })
-    private _spaces: Space[];
+    private _spaces: Space[] | undefined;
 
     @JsonProperty({ name: 'user_id' })
-    private _user_id: string;
+    private _user_id!: string;
     
     @JsonProperty({ name: 'created_at' })
-    private _createdAt: string;
+    private _createdAt!: string;
 
     @JsonProperty({ name: 'modified_at' })
-    private _modifiedAt: string;
+    private _modifiedAt!: string;
 
-    constructor(id: string, name: string, spaces: Space[], user_id: string,createdAt: string, modifiedAt: string) {
+    constructor() {
         super();
-        this._id = id;
-        this._name = name;
-        this._spaces = spaces;
-        this._user_id = user_id;
-        this._createdAt = createdAt;
-        this._modifiedAt = modifiedAt;
     }
 
     get id(): string {
@@ -46,10 +40,10 @@ export class SpaceState extends BaseModel {
     set name(value: string) {
         this._name = value;
     }
-    get spaces(): Space[] {
+    get spaces(): Space[] | undefined {
         return this._spaces;
     }
-    set spaces(value: Space[]) {
+    set spaces(value: Space[] | undefined) {
         this._spaces = value;
     }
     get user_id(): string {
@@ -69,8 +63,37 @@ export class SpaceState extends BaseModel {
     }
     set modifiedAt(value: string) {
         this._modifiedAt = value;
+    }   
+}
+
+export class SendSpaceStateRequestBuilder {
+    private readonly _sendRequest: SpaceState
+
+    constructor() {
+        this._sendRequest = new SpaceState()
     }
 
+    name(name: string): SendSpaceStateRequestBuilder {
+        this._sendRequest.name = name
+        return this
+    }
 
-    
+    user_id(user_id: string): SendSpaceStateRequestBuilder {
+        this._sendRequest.user_id = user_id
+        return this
+    }
+
+    createdAt(createdAt: string): SendSpaceStateRequestBuilder {
+        this._sendRequest.createdAt = createdAt
+        return this
+    }
+
+    modifiedAt(modifiedAt: string ): SendSpaceStateRequestBuilder {
+        this._sendRequest.modifiedAt = modifiedAt
+        return this
+    }
+
+    build(): SpaceState {
+        return this._sendRequest
+    }
 }

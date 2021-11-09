@@ -45,17 +45,29 @@ export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
+    data: { type: Role, default: new Role },
   },
   data() {
     return {
-      createdAt: new Date,
+      createdAt: '',
       name:'',
+      id:'',
       label: "Selectionnez une date et heure",
     };
   },
+  created(){
+    this.setFields(this.action, this.data)
+  },
   methods: {
-    ...mapActions("role", ["sendRole"]),
+    ...mapActions("role", ["sendRole", "updateRole"]),
     ...mapActions("butler", ["setIsModalVisible"]),
+    setFields(currentAction: string, data: Role){
+      if(currentAction === 'update') {
+        this.createdAt = data.createdAt
+        this.name = data.name
+        this.id = data.id
+      }
+    },
     checkForm: function (e) {
       e.preventDefault();
       if((this.name==='' )) {
@@ -68,11 +80,18 @@ export default Vue.extend({
       } else {
           const role: Role = new Role();
           role.name = this.name;
+          role.id = this.id;
           role.createdAt = new Date(this.createdAt).toISOString()
           role.modifiedAt = new Date(this.createdAt).toISOString()
-          this.sendRole(role).then(()=> {
-              console.log('envoyé depuis le modal')
-          })
+          if(this.action ==='create'){
+        this.sendRole(role).then(() => {
+          console.log("envoyé depuis le modal");
+        }); } else if (this.action === 'update'){
+          console.log(role)
+          this.updateRole(role).then(() => {
+          console.log("updaté depuis le modal");
+        });
+        }
       }
     },
     closeModal(){

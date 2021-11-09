@@ -6,11 +6,9 @@
         label-for="name-input"
         invalid-feedback="le nom est requis"
       >
-        <b-form-input
-          id="name-input"
-          v-model="name"
-        ></b-form-input>
+        <b-form-input id="name-input" v-model="name"></b-form-input>
       </b-form-group>
+      
       <b-form-group
         label="Date de création"
         label-for="date-input"
@@ -26,10 +24,12 @@
         />
       </b-form-group>
       <div class="modal-footer">
-            <b-button @click="closeModal" variant="outline-danger">Annuler</b-button>
-            <b-button variant="outline-success" type="submit">Valider</b-button>
-        </div>
-    </form> 
+        <b-button @click="closeModal" variant="outline-danger"
+          >Annuler</b-button
+        >
+        <b-button variant="outline-success" type="submit">Valider</b-button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -38,67 +38,86 @@ import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
-import {CommonFunctions} from "@/common/core/commonFunctions"
-import { SpaceState } from "@/models/butler/SpaceState";
-import spaceStateVue from "../space-state.vue";
+import { CommonFunctions } from "@/common/core/commonFunctions";
+import { Client } from "@/models/butler/Client";
+import { Reduction } from "@/models/butler/Reduction";
 Vue.component("VueCtkDateTimePicker", VueCtkDateTimePicker);
 export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
-    data: { type: SpaceState, default: new SpaceState },
+    data: { type: Reduction, default: new Reduction },
   },
   data() {
     return {
-      createdAt: '',
-      name:'',
       id:'',
+      createdAt: '',
+      name: "",
+      options: [undefined],
       label: "Selectionnez une date et heure",
     };
   },
   created(){
     this.setFields(this.action, this.data)
+    this.options = this.setClientTypeArray()
+  },
+  computed: {
+    ...mapGetters("client_type", ["getClientTypesMap"]),
   },
   methods: {
-    ...mapActions("space_state", ["sendSpaceState", "updateSpaceState"]),
+    ...mapActions("client", ["sendClient", "updateClient"]),
     ...mapActions("butler", ["setIsModalVisible"]),
-    setFields(currentAction: string, data: SpaceState){
+    setFields(currentAction: string, data: Reduction){
       if(currentAction === 'update') {
         this.createdAt = data.createdAt
         this.name = data.name
         this.id = data.id
       }
     },
+    
+    setClientTypeArray() :  any[] {
+      const options : any[] = []
+      for (const [key, value] of this.getClientTypesMap) {
+        const client_type = {
+          value : key,
+          text : value
+        }
+        options.push(client_type)
+      }
+      return options
+    },
 
     checkForm: function (e) {
       e.preventDefault();
-      if((this.name==='' )) {
-          CommonFunctions.makeToast(
+      if (
+        this.name === ""
+      ) {
+        CommonFunctions.makeToast(
           "danger",
           "Veuillez remplir tous les champs",
           "Statut du message",
           this.$bvToast
         );
       } else {
-          const space_state: SpaceState = new SpaceState();
-          space_state.id = this.id;
-          space_state.name = this.name;
-          space_state.createdAt = new Date(this.createdAt).toISOString()
-          space_state.modifiedAt = new Date(this.createdAt).toISOString()
+        const client: Client = new Client();
+        client.id = this.id;
+        client.name = this.name;
+        client.createdAt = new Date(this.createdAt).toISOString();
+        client.modifiedAt = new Date(this.createdAt).toISOString();
           if(this.action ==='create'){
-          this.sendSpaceState(space_state).then(()=> {
-              console.log('envoyé depuis le modal')
-          });
+        this.sendClient(client).then(() => {
+          console.log("envoyé depuis le modal");
+        });
           }else if (this.action === 'update'){
-          this.updateSpaceState(space_state).then(() => {
+          this.updateClient(client).then(() => {
           console.log("updaté depuis le modal");
         });
         }
       }
     },
-    closeModal(){
-        this.setIsModalVisible(false)
-    }
+    closeModal() {
+      this.setIsModalVisible(false);
+    },
   },
 });
 </script>

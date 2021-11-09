@@ -72,6 +72,37 @@ export class RoleService extends HttpBaseService {
             })
     }
 
+    public updateRole(role: Role): Promise<ApiResponse<Role>> {
+        const request: Role = new SendRoleRequestBuilder()
+            .name(role.name)
+            .createdAt(role.createdAt)
+            .modifiedAt(role.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'role/' + role.id
+
+        return this.instance.put(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<Role>()
+                switch (response.status) {
+                    case 202: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<Role>(response.data, Role)
+                        console.log('put réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('put échoué')
+                        return new ApiResponse<Role>()
+            })
+    }
+
 
 
 }

@@ -73,6 +73,38 @@ export class ClientTypeService extends HttpBaseService {
             })
     }
 
+    public updateClientType(client_type: ClientType): Promise<ApiResponse<ClientType>> {
+        const request: ClientType = new SendClientTypeRequestBuilder()
+            .name(client_type.name)
+            .user_id(client_type.user_id)
+            .createdAt(client_type.createdAt)
+            .modifiedAt(client_type.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'client_type/' + client_type.id
+
+        return this.instance.put(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<ClientType>()
+                switch (response.status) {
+                    case 202: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<ClientType>(response.data, ClientType)
+                        console.log('put réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('put échoué')
+                        return new ApiResponse<ClientType>()
+            })
+    }
+
 
 
 }

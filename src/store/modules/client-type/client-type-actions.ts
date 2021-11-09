@@ -37,5 +37,24 @@ export const actions: ActionTree<ClientTypeState, RootState> = {
             }).catch(reason => {
                 console.log(reason)
             })
+    },
+
+    updateClientType(context, payload : ClientType) {
+        const client_type : ClientType = new ClientType()
+        client_type.name = payload.name
+        client_type.user_id = payload.user_id
+        client_type.id = payload.id
+        client_type.createdAt = payload.createdAt
+        client_type.modifiedAt = payload.modifiedAt
+        
+        console.log(client_type)
+        return ClientTypeService.getInstance('').updateClientType(client_type)
+            .then(value => {
+                if(value.data) {
+                    return value.data
+                }
+            }).catch(reason => {
+                console.log(reason)
+            })
     }
 }

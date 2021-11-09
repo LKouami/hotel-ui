@@ -75,4 +75,38 @@ export class UserService extends HttpBaseService {
             })
     }
 
+    public updateUser(user: User): Promise<ApiResponse<User>> {
+        const request: User = new SendUserRequestBuilder()
+            .name(user.name)
+            .email(user.email)
+            .password(user.password)
+            .role_id(user.role_id)
+            .createdAt(user.createdAt)
+            .modifiedAt(user.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(user)
+        const sendUrl: string | null = 'user/'+ user.id
+
+        return this.instance.put(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<User>()
+                switch (response.status) {
+                    case 202: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<User>(response.data, User)
+                        console.log('put réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('put échoué')
+                        return new ApiResponse<User>()
+            })
+    }
+
 }

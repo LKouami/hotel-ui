@@ -23,12 +23,12 @@
           {{ data.item._createdAt | formatDate  }}
           </div>
         </template>
-      <template #cell(actions)="">
+      <template #cell(actions)="data">
         <b-button
           size="sm"
           class="mr-1"
           variant="outline-primary"
-          @click="showModal('update')"
+          @click="showUpdateModal('update', data)"
         >
           Modifier
         </b-button>
@@ -52,7 +52,7 @@
       scrollable 
       centered 
     >
-      <modal :action="action" />
+      <modal :action="action" :data="data"/>
     </b-modal>
   </div>
 </template>
@@ -79,6 +79,7 @@ export default Vue.extend({
   data() {
     return {
       action: "",
+      data : new SpaceState,
       fields: [
         {
           key:"name",
@@ -117,6 +118,14 @@ export default Vue.extend({
       console.log(this.getIsModalVisible)
       this.action = action;
       console.log("teststtststst");
+    },
+    showUpdateModal(action: string, data: any) {
+      // this.$root.$emit('bv::show::modal', 'modal-prevent-closing', '#btnShow')
+      this.setIsModalVisible(true);
+      console.log(this.getIsModalVisible);
+      this.action = action;
+      this.data = data.item
+      console.log(this.data);
     },
     resetModal(){
       this.setIsModalVisible(false);

@@ -38,5 +38,23 @@ export const actions: ActionTree<RoleState, RootState> = {
             })
     },
 
+    updateRole(context, payload : Role) {
+        const role : Role = new Role()
+        role.name = payload.name
+        role.id = payload.id
+        role.createdAt = payload.createdAt
+        role.modifiedAt = payload.modifiedAt
+        
+        console.log(role)
+        return RoleService.getInstance('').updateRole(role)
+            .then(value => {
+                if(value.data) {
+                    return value.data
+                }
+            }).catch(reason => {
+                console.log(reason)
+            })
+    },
+
     
 }

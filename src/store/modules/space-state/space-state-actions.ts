@@ -37,4 +37,22 @@ export const actions: ActionTree<SpaceStateState, RootState> = {
                 console.log(reason)
             })
     },
+
+    updateSpaceState(context, payload : SpaceState) {
+        const space_state : SpaceState = new SpaceState()
+        space_state.id = payload.id
+        space_state.name = payload.name
+        space_state.createdAt = payload.createdAt
+        space_state.modifiedAt = payload.modifiedAt
+        
+        console.log(space_state)
+        return SpaceStateService.getInstance('').updateSpaceState(space_state)
+            .then(value => {
+                if(value.data) {
+                    return value.data
+                }
+            }).catch(reason => {
+                console.log(reason)
+            })
+    },
 }

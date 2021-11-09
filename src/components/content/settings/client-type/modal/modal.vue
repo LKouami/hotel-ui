@@ -11,16 +11,7 @@
           v-model="name"
         ></b-form-input>
       </b-form-group>
-      <b-form-group
-        label="Utilisateur"
-        label-for="user-input"
-        invalid-feedback="l'utilisateur est requis"
-      >
-        <b-form-input
-          id="user-input"
-          v-model="user_id"
-        ></b-form-input>
-      </b-form-group>
+
       <b-form-group
         label="Date de création"
         label-for="date-input"
@@ -55,18 +46,29 @@ export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
+    data: { type: ClientType, default: new ClientType },
   },
   data() {
     return {
-      createdAt: new Date,
+      createdAt: '',
       name:'',
-      user_id:'',
+      id:'',
       label: "Selectionnez une date et heure",
     };
   },
+  created(){
+    this.setFields(this.action, this.data)
+  },
   methods: {
-    ...mapActions("client_type", ["sendClientType"]),
+    ...mapActions("client_type", ["sendClientType", "updateClientType"]),
     ...mapActions("butler", ["setIsModalVisible"]),
+    setFields(currentAction: string, data: ClientType){
+      if(currentAction === 'update') {
+        this.createdAt = data.createdAt
+        this.name = data.name
+        this.id = data.id
+      }
+    },
     checkForm: function (e) {
       e.preventDefault();
       if((this.name==='' )) {
@@ -79,12 +81,19 @@ export default Vue.extend({
       } else {
           const client_type: ClientType = new ClientType();
           client_type.name = this.name;
-          client_type.user_id = this.user_id;
+          client_type.user_id = '2';
+          client_type.id = this.id;
           client_type.createdAt = new Date(this.createdAt).toISOString()
           client_type.modifiedAt = new Date(this.createdAt).toISOString()
-          this.sendClientType(client_type).then(()=> {
-              console.log('envoyé depuis le modal')
-          })
+          if(this.action ==='create'){
+        this.sendClientType(client_type).then(() => {
+          console.log("envoyé depuis le modal");
+        }); } else if (this.action === 'update'){
+          console.log(client_type)
+          this.updateClientType(client_type).then(() => {
+          console.log("updaté depuis le modal");
+        });
+        }
       }
     },
     closeModal(){

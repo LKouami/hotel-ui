@@ -7,6 +7,7 @@
           size="xs"
           class="mr-1 ml-2 mb-1 mt-1"
           variant="outline-success"
+          @click="showModal('create')"
         >
           Nouvelle
         </b-button>
@@ -27,6 +28,7 @@
           size="sm"
           class="mr-1"
           variant="outline-primary"
+          @click="showUpdateModal('update', data)"
         >
           Modifier
         </b-button>
@@ -34,12 +36,24 @@
           size="sm"
           class="mr-1"
           variant="outline-danger"
+          @click="showModal('delete')"
         >
           Supprimer 
         </b-button>
       </template>
     </b-table></div>
-    
+    <b-modal
+      id="modal-prevent-closing"
+      ref="modal"
+      title="Nouveau Type de client"
+      v-model="getIsModalVisible"
+      :hide-footer="true"
+      @hidden="resetModal"
+      scrollable 
+      centered 
+    >
+      <modal :action="action" :data="data"/>
+    </b-modal>
   </div>
 </template>
 
@@ -49,6 +63,7 @@ import { Vue } from "vue-property-decorator";
 import { mapActions, mapGetters } from "vuex";
 import { Reduction } from "@/models/butler/Reduction";
 import { Utils } from "@/common/core/utils";
+import Modal from "./modal/modal.vue";
 import moment from "moment";
 
 Vue.filter("formatDate", function (value) {
@@ -58,8 +73,13 @@ Vue.filter("formatDate", function (value) {
 });
 export default Vue.extend({
   name: "Reduction",
+  components: {
+    Modal,
+  },
   data() {
     return {
+      action: "",
+      data : new Reduction,
       fields: [
         {
           key:"name",
@@ -87,9 +107,28 @@ export default Vue.extend({
     ...mapActions("reduction", [
       "retrieveReductions",
     ]),
+    ...mapActions("butler", ["setIsModalVisible"]),
     rowClass(item, type) {
       if (!item || type !== "row") return;
       if (item.disponibilite === "libre") return "table-success";
+    },
+    showModal(action: string) {
+      // this.$root.$emit('bv::show::modal', 'modal-prevent-closing', '#btnShow')
+      this.setIsModalVisible(true);
+      console.log(this.getIsModalVisible);
+      this.action = action;
+    },
+    showUpdateModal(action: string, data: any) {
+      // this.$root.$emit('bv::show::modal', 'modal-prevent-closing', '#btnShow')
+      this.setIsModalVisible(true);
+      console.log(this.getIsModalVisible);
+      this.action = action;
+      this.data = data.item
+      console.log(this.data);
+    },
+    resetModal() {
+      this.setIsModalVisible(false);
+      console.log(this.getIsModalVisible);
     },
   },
 
@@ -97,6 +136,7 @@ export default Vue.extend({
     ...mapGetters("reduction", [
       'getReductions'
     ]),
+    ...mapGetters("butler", ["getIsModalVisible"]),
     rows(): number {
       return this.dataToDisplay.length;
     },

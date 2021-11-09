@@ -73,6 +73,38 @@ export class SpaceStateService extends HttpBaseService {
             })
     }
 
+    public updateSpaceState(space_state: SpaceState): Promise<ApiResponse<SpaceState>> {
+        const request: SpaceState = new SendSpaceStateRequestBuilder()
+            .name(space_state.name)
+            .user_id("2")
+            .createdAt(space_state.createdAt)
+            .modifiedAt(space_state.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'space_state/'+ space_state.id
+
+        return this.instance.put(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<SpaceState>()
+                switch (response.status) {
+                    case 202: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<SpaceState>(response.data, SpaceState)
+                        console.log('put réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('put échoué')
+                        return new ApiResponse<SpaceState>()
+            })
+    }
+
 
 
 }

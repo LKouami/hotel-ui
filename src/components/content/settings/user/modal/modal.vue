@@ -66,28 +66,42 @@ export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
+    data: { type: User, default: new User },
   },
   data() {
     return {
-      createdAt: new Date(),
+      createdAt:'',
       name: "",
       email: "",
       role: "",
       password: "",
+      id:"",
       options: [undefined],
       label: "Selectionnez une date et heure",
     };
   },
   created(){
     this.options = this.setRoleArray()
+    this.setFields(this.action, this.data)
+    console.log(this.data)
+    console.log('this.data')
   },
   computed: {
     ...mapGetters("role", ["getRolesMap"]),
   },
   methods: {
-    ...mapActions("user", ["sendUser"]),
+    ...mapActions("user", ["sendUser", "updateUser"]),
     ...mapActions("butler", ["setIsModalVisible"]),
-
+    setFields(currentAction: string, data: User){
+      if(currentAction === 'update') {
+        this.createdAt = data.createdAt
+        this.name = data.name
+        this.email = data.email
+        this.role = data.role.id
+        this.password = data.password
+        this.id = data.id
+      }
+    },
     setRoleArray() :  any[] {
       const options : any[] = []
       for (const [key, value] of this.getRolesMap) {
@@ -121,11 +135,18 @@ export default Vue.extend({
         user.email = this.email;
         user.password = this.password;
         user.role_id = this.role;
+        user.id = this.id
         user.createdAt = new Date(this.createdAt).toISOString();
         user.modifiedAt = new Date(this.createdAt).toISOString();
+        if(this.action ==='create'){
         this.sendUser(user).then(() => {
           console.log("envoyé depuis le modal");
+        }); } else if (this.action === 'update'){
+          console.log(user)
+          this.updateUser(user).then(() => {
+          console.log("updaté depuis le modal");
         });
+        }
       }
     },
     closeModal() {

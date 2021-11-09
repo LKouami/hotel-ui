@@ -45,17 +45,29 @@ export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
+    data: { type: SpaceType, default: new SpaceType },
   },
   data() {
     return {
-      createdAt: new Date,
+      id:'',
+      createdAt: '',
       name:'',
       label: "Selectionnez une date et heure",
     };
   },
+  created(){
+    this.setFields(this.action, this.data)
+  },
   methods: {
-    ...mapActions("space_type", ["sendSpaceType"]),
+    ...mapActions("space_type", ["sendSpaceType", "updateSpaceType"]),
     ...mapActions("butler", ["setIsModalVisible"]),
+    setFields(currentAction: string, data: SpaceType){
+      if(currentAction === 'update') {
+        this.createdAt = data.createdAt
+        this.name = data.name
+        this.id = data.id
+      }
+    },
     checkForm: function (e) {
       e.preventDefault();
       if((this.name==='' )) {
@@ -67,12 +79,19 @@ export default Vue.extend({
         );
       } else {
           const space_type: SpaceType = new SpaceType();
+          space_type.id = this.id;
           space_type.name = this.name;
           space_type.createdAt = new Date(this.createdAt).toISOString()
           space_type.modifiedAt = new Date(this.createdAt).toISOString()
+          if(this.action ==='create'){
           this.sendSpaceType(space_type).then(()=> {
               console.log('envoyé depuis le modal')
           })
+          }else if (this.action === 'update'){
+          this.updateSpaceType(space_type).then(() => {
+          console.log("updaté depuis le modal");
+        });
+        }
       }
     },
     closeModal(){

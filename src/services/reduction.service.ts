@@ -75,6 +75,40 @@ export class ReductionService extends HttpBaseService {
             })
     }
 
+    public updateReduction(reduction: Reduction): Promise<ApiResponse<Reduction>> {
+        const request: Reduction = new SendReductionRequestBuilder()
+            .name(reduction.name)
+            .rate(reduction.rate)
+            .user_id(reduction.user_id)
+            .createdAt(reduction.createdAt)
+            .modifiedAt(reduction.modifiedAt)
+            .modifiedBy(reduction.modifiedBy)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        console.log(requestConfig)
+        const sendUrl: string | null = 'reduction/'+ reduction.id
+
+        return this.instance.put(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<Reduction>()
+                switch (response.status) {
+                    case 202: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<Reduction>(response.data, Reduction)
+                        console.log('put réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('put échoué')
+                        return new ApiResponse<Reduction>()
+            })
+    }
+
 
 
 }

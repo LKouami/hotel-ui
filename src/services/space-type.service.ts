@@ -50,7 +50,6 @@ export class SpaceTypeService extends HttpBaseService {
             .build()
 
         const requestConfig: AxiosRequestConfig = serialize(request)
-        console.log(requestConfig)
         const sendUrl: string | null = 'space_type'
 
         return this.instance.post(sendUrl!, requestConfig)
@@ -69,6 +68,37 @@ export class SpaceTypeService extends HttpBaseService {
             })
             .catch(error => {
                         console.log('post échoué')
+                        return new ApiResponse<SpaceType>()
+            })
+    }
+
+    public updateSpaceType(space_type: SpaceType): Promise<ApiResponse<SpaceType>> {
+        const request: SpaceType = new SendSpaceTypeRequestBuilder()
+            .name(space_type.name)
+            .user_id("2")
+            .createdAt(space_type.createdAt)
+            .modifiedAt(space_type.modifiedAt)
+            .build()
+
+        const requestConfig: AxiosRequestConfig = serialize(request)
+        const sendUrl: string | null = 'space_type/' + space_type.id
+
+        return this.instance.put(sendUrl!, requestConfig)
+            .then(response => {
+                const apiResponse = new ApiResponse<SpaceType>()
+                switch (response.status) {
+                    case 202: {
+                        return apiResponse
+                    }
+                    default: {
+                        apiResponse.data = deserialize<SpaceType>(response.data, SpaceType)
+                        console.log('post réussi')
+                        return apiResponse
+                    }
+                }
+            })
+            .catch(error => {
+                        console.log('put échoué')
                         return new ApiResponse<SpaceType>()
             })
     }

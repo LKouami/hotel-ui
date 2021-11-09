@@ -43,5 +43,31 @@ export const actions: ActionTree<ClientState, RootState> = {
             }).catch(reason => {
                 console.log(reason)
             })
+    },
+
+    updateClient(context, payload : Client) {
+        const client : Client = new Client()
+        client.id = payload.id;
+        client.name = payload.name;
+        client.email = payload.email;
+        client.nationality = payload.nationality;
+        client.birth_date = new Date(payload.birth_date).toISOString();
+        client.under_cover = payload.under_cover;
+        client.comments = payload.comments;
+        client.id_card_num = payload.id_card_num;
+        client.client_type_id = payload.client_type_id;
+        client.phone = payload.phone;
+        client.createdAt = payload.createdAt
+        client.modifiedAt = payload.modifiedAt
+        
+        console.log(client)
+        return ClientService.getInstance('').updateClient(client)
+            .then(value => {
+                if(value.data) {
+                    return value.data
+                }
+            }).catch(reason => {
+                console.log(reason)
+            })
     }
 }

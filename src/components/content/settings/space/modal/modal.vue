@@ -95,10 +95,12 @@ export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
+    data: { type: Space, default: new Space },
   },
   data() {
     return {
-      createdAt: new Date,
+      createdAt: '',
+      id:'',
       name:'',
       location:'',
       price:'',
@@ -111,6 +113,7 @@ export default Vue.extend({
     };
   },
   created(){
+    this.setFields(this.action, this.data)
     this.space_type_options = this.setSpaceTypeArray()
     this.space_state_options = this.setSpaceStateArray()
   },
@@ -119,8 +122,21 @@ export default Vue.extend({
     ...mapGetters("space_state", ["getSpaceStatesMap"]),
   },
   methods: {
-    ...mapActions("space", ["sendSpace"]),
+    ...mapActions("space", ["sendSpace", "updateSpace"]),
     ...mapActions("butler", ["setIsModalVisible"]),
+    setFields(currentAction: string, data: Space){
+      if(currentAction === 'update') {
+        this.createdAt = data.createdAt
+        this.name = data.name
+        this.location = data.location
+        this.price = data.price
+        this.space_type_id = data.space_type_id
+        this.space_state_id = data.space_state_id
+        this.comments = data.comments
+        this.id = data.id
+      }
+    },
+
 
     setSpaceTypeArray() :  any[] {
       const options : any[] = []
@@ -157,6 +173,7 @@ export default Vue.extend({
         );
       } else {
           const space: Space = new Space();
+          space.id = this.id;
           space.name = this.name;
           space.location = this.location;
           space.price = this.price;
@@ -165,9 +182,15 @@ export default Vue.extend({
           space.space_state_id = this.space_state_id;
           space.createdAt = new Date(this.createdAt).toISOString()
           space.modifiedAt = new Date(this.createdAt).toISOString()
+          if(this.action ==='create'){
           this.sendSpace(space).then(()=> {
               console.log('envoyé depuis le modal')
           })
+      }else if (this.action === 'update'){
+          this.updateSpace(space).then(() => {
+          console.log("updaté depuis le modal");
+        });
+        }
       }
     },
     closeModal(){

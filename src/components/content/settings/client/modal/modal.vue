@@ -100,16 +100,18 @@ export default Vue.extend({
   name: "Modal",
   props: {
     action: { type: String, default: null },
+    data: { type: Client, default: new Client },
   },
   data() {
     return {
-      createdAt: new Date(),
+      id:'',
+      createdAt: '',
       name: "",
       email: "",
       nationality: "",
       id_card_num: "",
       phone: "",
-      birth_date: new Date,
+      birth_date: '',
       under_cover: "",
       comments: "",
       client_type_id: "",
@@ -118,15 +120,31 @@ export default Vue.extend({
     };
   },
   created(){
+    this.setFields(this.action, this.data)
     this.options = this.setClientTypeArray()
   },
   computed: {
     ...mapGetters("client_type", ["getClientTypesMap"]),
   },
   methods: {
-    ...mapActions("client", ["sendClient"]),
+    ...mapActions("client", ["sendClient", "updateClient"]),
     ...mapActions("butler", ["setIsModalVisible"]),
-
+    setFields(currentAction: string, data: Client){
+      if(currentAction === 'update') {
+        this.createdAt = data.createdAt
+        this.name = data.name
+        this.email = data.email
+        this.nationality = data.nationality
+        this.id_card_num = data.id_card_num
+        this.phone = data.phone
+        this.birth_date = data.birth_date
+        this.under_cover = data.under_cover
+        this.comments = data.comments
+        this.client_type_id = data.client_type_id
+        this.id = data.id
+      }
+    },
+    
     setClientTypeArray() :  any[] {
       const options : any[] = []
       for (const [key, value] of this.getClientTypesMap) {
@@ -159,6 +177,7 @@ export default Vue.extend({
         );
       } else {
         const client: Client = new Client();
+        client.id = this.id;
         client.name = this.name;
         client.email = this.email;
         client.nationality = this.nationality;
@@ -170,9 +189,15 @@ export default Vue.extend({
         client.phone = this.phone;
         client.createdAt = new Date(this.createdAt).toISOString();
         client.modifiedAt = new Date(this.createdAt).toISOString();
+          if(this.action ==='create'){
         this.sendClient(client).then(() => {
           console.log("envoyé depuis le modal");
         });
+          }else if (this.action === 'update'){
+          this.updateClient(client).then(() => {
+          console.log("updaté depuis le modal");
+        });
+        }
       }
     },
     closeModal() {

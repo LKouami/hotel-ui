@@ -4,7 +4,12 @@
     <br />
     <div class="row">
       <h2>Type de Client</h2>
-      <b-button size="xs" class="mr-1 ml-2 mb-1 mt-1" variant="outline-success" @click="showModal('create')">
+      <b-button
+        size="xs"
+        class="mr-1 ml-2 mb-1 mt-1"
+        variant="outline-success"
+        @click="showModal('create')"
+      >
         Nouveau
       </b-button>
     </div>
@@ -19,8 +24,13 @@
             {{ data.item._createdAt | formatDate }}
           </div>
         </template>
-        <template #cell(actions)="">
-          <b-button size="sm" class="mr-1" variant="outline-primary" @click="showModal('update')">
+        <template #cell(actions)="data">
+          <b-button
+            size="sm"
+            class="mr-1"
+            variant="outline-primary"
+            @click="showUpdateModal('update', data)"
+          >
             Modifier
           </b-button>
           <b-button
@@ -41,10 +51,10 @@
       v-model="getIsModalVisible"
       :hide-footer="true"
       @hidden="resetModal"
-      scrollable 
-      centered 
+      scrollable
+      centered
     >
-      <modal :action="action" />
+      <modal :action="action" :data="data"/>
     </b-modal>
   </div>
 </template>
@@ -71,6 +81,7 @@ export default Vue.extend({
   data() {
     return {
       action: "",
+      data: new ClientType,
       fields: [
         {
           key: "name",
@@ -107,6 +118,14 @@ export default Vue.extend({
       console.log(this.getIsModalVisible);
       this.action = action;
       console.log("teststtststst");
+    },
+    showUpdateModal(action: string, data: any) {
+      // this.$root.$emit('bv::show::modal', 'modal-prevent-closing', '#btnShow')
+      this.setIsModalVisible(true);
+      console.log(this.getIsModalVisible);
+      this.action = action;
+      this.data = data.item
+      console.log(this.data);
     },
     resetModal() {
       this.setIsModalVisible(false);
